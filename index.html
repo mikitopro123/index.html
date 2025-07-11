@@ -1,70 +1,440 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Mikuss Portfolio</title>
-  <style>
-    body {
-      background-color: #1e1e1e;
-      color: #f0f0f0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      padding: 50px 20px;
-      background-color: #333;
-    }
-    h1 {
-      font-size: 48px;
-      margin: 0;
-      color: #00ffff;
-    }
-    p {
-      font-size: 20px;
-      color: #ccc;
-    }
-    .projects {
-      padding: 40px 20px;
-    }
-    .project {
-      background-color: #2e2e2e;
-      margin: 20px auto;
-      padding: 20px;
-      width: 80%;
-      border-radius: 10px;
-    }
-    a {
-      color: #00ffff;
-      text-decoration: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mikus Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: transform 0.5s ease;
+            transform: rotate(45deg) translateX(-100%);
+        }
+
+        .category-card:hover::before {
+            transform: rotate(45deg) translateX(100%);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .category-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .subcategories {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .subcategories.active {
+            display: block;
+        }
+
+        .plugin-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .plugin-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .plugin-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .plugin-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .plugin-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+
+        .plugin-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .free-badge {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .soon-badge {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        .back-button {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>Mikus Portfolio</h1>
+            <p>Profesjonalne rozwiązania dla serwerów Minecraft</p>
+        </div>
 
-  <header>
-    <h1>Mikuss Portfolio</h1>
-    <p>Tworzę pluginy Minecraft i strony internetowe</p>
-  </header>
+        <div id="main-categories" class="categories">
+            <div class="category-card" onclick="showSubcategories('plugins')">
+                <span class="category-icon">🔌</span>
+                <h3 class="category-title">Plugins</h3>
+                <p class="category-description">Zaawansowane pluginy dla serwerów Minecraft</p>
+            </div>
 
-  <div class="projects">
-    <h2>Moje projekty</h2>
+            <div class="category-card" onclick="showSubcategories('bots')">
+                <span class="category-icon">🤖</span>
+                <h3 class="category-title">Boty Discord</h3>
+                <p class="category-description">Funkcjonalne boty Discord dla społeczności</p>
+            </div>
 
-    <div class="project">
-      <h3>📦 Plugin na kosz</h3>
-      <p>Plugin Minecraft, który pozwala graczom wyrzucać itemy do kosza GUI.</p>
-      <a href="#">Zobacz więcej</a>
+            <div class="category-card" onclick="showSubcategories('packages')">
+                <span class="category-icon">📦</span>
+                <h3 class="category-title">Paczki Minecraft</h3>
+                <p class="category-description">Gotowe zestawy konfiguracji i dodatków</p>
+            </div>
+
+            <div class="category-card" onclick="showSubcategories('programs')">
+                <span class="category-icon">💻</span>
+                <h3 class="category-title">Programy</h3>
+                <p class="category-description">Aplikacje i narzędzia pomocnicze</p>
+            </div>
+        </div>
+
+        <div id="plugins-subcategories" class="subcategories">
+            <button class="back-button" onclick="showMainCategories()">← Powrót do kategorii głównych</button>
+            
+            <div class="plugin-item">
+                <div class="free-badge">FREE</div>
+                <h4 class="plugin-title">Zaawansowany plugin na Ogłoszenia</h4>
+                <p class="plugin-description">Profesjonalny system ogłoszeń z zaawansowanymi funkcjami zarządzania i personalizacji.</p>
+                <a href="https://youtu.be/1_oGoqqEh9I?si=NG9y5oQQPX_4fKkC" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">Plugin na rynek 1:1 z anarchii</h4>
+                <p class="plugin-description">Zaawansowany system handlu inspirowany serwerem anarchii z pełną funkcjonalnością rynku.</p>
+                <a href="https://youtu.be/l_UxmbRf0d8?si=gxrly--go7f08SHj" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">Plugin na sprawdzanie w GUI</h4>
+                <p class="plugin-description">Intuicyjny interfejs graficzny do sprawdzania różnych funkcji serwera.</p>
+                <a href="https://youtu.be/IDIdn37-xlc?si=rsC-h87FTH4kww0m" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">Plugin na TPA z anarchi.gg</h4>
+                <p class="plugin-description">System teleportacji z zaawansowanymi funkcjami bezpieczeństwa.</p>
+                <a href="https://youtu.be/SonYbjyol3k" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">Logowanie premium i Non-premium + antybot + antyvpn</h4>
+                <p class="plugin-description">Kompleksowy system bezpieczeństwa z obsługą różnych typów kont i ochroną przed botami.</p>
+                <a href="https://youtu.be/VOre2mxXkz4" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">Plugin na kamienie Alchemiczne z serwera anarchia.gg</h4>
+                <p class="plugin-description">Zaawansowany system alchemii z unikalnymi kamieniami i przepisami.</p>
+                <div class="image-gallery">
+                    <img src="https://cdn.discordapp.com/attachments/1392912092968779828/1392912369838985276/20250705_233211.jpg?ex=6871eafc&is=6870997c&hm=7c8726aa37bef537495b6c2c9b320bddc9b090c062a11e5f9efb18a05b7790cd&" alt="Kamienie Alchemiczne 1" class="gallery-image" onclick="openImage(this.src)">
+                    <img src="https://cdn.discordapp.com/attachments/1392912092968779828/1392912370350817313/20250705_233837.jpg?ex=6871eafc&is=6870997c&hm=03bc99aef1198c2bf50b0a786ef01a5a7c65362481ee7efec729566a6aaddab0&" alt="Kamienie Alchemiczne 2" class="gallery-image" onclick="openImage(this.src)">
+                    <img src="https://cdn.discordapp.com/attachments/1392912092968779828/1392912370673913947/20250705_233824.jpg?ex=6871eafc&is=6870997c&hm=cab38c8771f73371b8c9219f7abfa2efba40701fefc7b62275d225b908a790ed&" alt="Kamienie Alchemiczne 3" class="gallery-image" onclick="openImage(this.src)">
+                </div>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">Plugin na osiągnięcia z serwera easyhc/hc</h4>
+                <p class="plugin-description">System osiągnięć zaprojektowany specjalnie dla serwerów hardcore.</p>
+                <div class="soon-badge">Wkrótce dostępne!</div>
+            </div>
+        </div>
+
+        <div id="bots-subcategories" class="subcategories">
+            <button class="back-button" onclick="showMainCategories()">← Powrót do kategorii głównych</button>
+            <div class="soon-badge">Wkrótce dostępne!</div>
+        </div>
+
+        <div id="packages-subcategories" class="subcategories">
+            <button class="back-button" onclick="showMainCategories()">← Powrót do kategorii głównych</button>
+            <div class="soon-badge">Wkrótce dostępne!</div>
+        </div>
+
+        <div id="programs-subcategories" class="subcategories">
+            <button class="back-button" onclick="showMainCategories()">← Powrót do kategorii głównych</button>
+            
+            <div class="plugin-item">
+                <h4 class="plugin-title">Clear Strings</h4>
+                <p class="plugin-description">Zaawansowane narzędzie do czyszczenia i formatowania ciągów tekstowych z intuicyjnym interfejsem użytkownika.</p>
+                <a href="https://youtu.be/DB1xmyGLHlg?si=ttK_JfONywlj9Q23" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+
+            <div class="plugin-item">
+                <h4 class="plugin-title">JAR-EXE Mikus</h4>
+                <p class="plugin-description">Profesjonalny konwerter plików JAR na EXE z zaawansowanymi opcjami konfiguracji i optymalizacji.</p>
+                <a href="https://youtu.be/Ouf4P3gaXZ4?si=0PY9Q1AS4JBJ3T9m" class="plugin-link" target="_blank">📹 Zobacz prezentację</a>
+            </div>
+        </div>
     </div>
 
-    <div class="project">
-      <h3>💬 Plugin na chat</h3>
-      <p>Włącza, wyłącza i czyści czat przez GUI.</p>
-      <a href="#">Zobacz więcej</a>
-    </div>
+    <script>
+        function showSubcategories(category) {
+            // Ukryj główne kategorie
+            document.getElementById('main-categories').style.display = 'none';
+            
+            // Ukryj wszystkie podkategorie
+            const subcategories = document.querySelectorAll('.subcategories');
+            subcategories.forEach(sub => {
+                sub.classList.remove('active');
+            });
+            
+            // Pokaż wybraną podkategorię
+            document.getElementById(category + '-subcategories').classList.add('active');
+        }
 
-    <!-- Dodaj więcej projektów wedle potrzeb -->
-  </div>
+        function showMainCategories() {
+            // Pokaż główne kategorie
+            document.getElementById('main-categories').style.display = 'grid';
+            
+            // Ukryj wszystkie podkategorie
+            const subcategories = document.querySelectorAll('.subcategories');
+            subcategories.forEach(sub => {
+                sub.classList.remove('active');
+            });
+        }
 
+        function openImage(src) {
+            window.open(src, '_blank');
+        }
+
+        // Dodaj efekt parallax do tła
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('body');
+            const speed = scrolled * 0.5;
+            parallax.style.backgroundPosition = `center ${speed}px`;
+        });
+
+        // Animacja wczytywania
+        window.addEventListener('load', () => {
+            const cards = document.querySelectorAll('.category-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+                }, 100);
+            });
+        });
+    </script>
 </body>
 </html>
